@@ -122,5 +122,5 @@ flask run
 </div>
 <div align="center">
 
-### Выполнено в рамках прохождения курса "Python-разработчик плюс" на ["Яндекс Практикум"](https://practicum.yandex.ru/)
+### Выполнено в рамках прохождения курса "Python-разработчик плюс" на ["Яндекс&nbsp;Практикум"](https://practicum.yandex.ru/)
 </div>
