@@ -1,10 +1,10 @@
 import re
 
-from yacut.constants import PATTERN
+from yacut.constants import SHORT_VALIDATION_PATTERN
 
 
 def custom_id_validator(custom_id):
     """Валидатор предложенного короткого идентификатора."""
     if custom_id:
-        return bool(re.match(PATTERN, custom_id))
+        return bool(re.match(SHORT_VALIDATION_PATTERN, custom_id))
     return True

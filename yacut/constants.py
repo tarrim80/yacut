@@ -1,6 +1,11 @@
+import string
+
 BASE_SHORT_URL = "http://localhost/"
-PATTERN = r"^[a-zA-Z0-9]{1,16}$"
 EMPTY_INPUT = ("", None)
+MIN_SHORT_LENGHT = 1
+MAX_SHORT_LENGHT = 16
+SHORT_VALIDATION_PATTERN = rf"^[a-zA-Z0-9]{{{MIN_SHORT_LENGHT},{MAX_SHORT_LENGHT}}}$"  # Паттерн проверки короткой ссылки на соответствие заданию
+LETTERS_AND_DIGITS_SET = string.ascii_letters + string.digits
 
 
 class MessageInfo:
@@ -15,3 +20,8 @@ class MessageInfo:
     SHORT_DONE = "Ваша новая ссылка готова:"
     SHORT_INVALID = "Указано недопустимое имя для короткой ссылки"
     SHORT_NOT_FOUND = "Указанный id не найден"
+
+
+class HTTPMethod:
+    GET = "GET"
+    POST = "POST"

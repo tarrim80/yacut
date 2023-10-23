@@ -3,14 +3,14 @@ from http import HTTPStatus
 from flask import jsonify, request
 
 from yacut import app, db
-from yacut.constants import EMPTY_INPUT, MessageInfo
+from yacut.constants import EMPTY_INPUT, HTTPMethod, MessageInfo
 from yacut.error_handlers import InvalidAPIUsage
 from yacut.models import URLMap
 from yacut.services import get_unique_short_id
 from yacut.validators import custom_id_validator
 
 
-@app.route("/api/id/<short_id>/", methods=("GET",))
+@app.route("/api/id/<short_id>/", methods=(HTTPMethod.GET,))
 def get_original_url(short_id):
     """Получение оригинальной ссылки по короткому идентификатору."""
     url = URLMap().query.filter_by(short=short_id).first()
@@ -21,9 +21,9 @@ def get_original_url(short_id):
     return jsonify({"url": url.to_dict()["url"]}), HTTPStatus.OK
 
 
-@app.route("/api/id/", methods=("POST",))
+@app.route("/api/id/", methods=(HTTPMethod.POST,))
 def create_short_link():
-    """Созлдание короткой ссылки."""
+    """Создание короткой ссылки."""
     data = request.get_json()
     if data is None:
         raise InvalidAPIUsage(MessageInfo.NO_BODY_REQUEST)

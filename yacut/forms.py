@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import URL, DataRequired, Length, Optional
 
+from yacut.constants import MAX_SHORT_LENGHT, MIN_SHORT_LENGHT
+
 
 class URLMapForm(FlaskForm):
     """Главная форма приложения."""
@@ -12,6 +14,6 @@ class URLMapForm(FlaskForm):
     )
     custom_id = StringField(
         "Ваш вариант короткой ссылки",
-        validators=(Length(1, 16), Optional()),
+        validators=(Length(MIN_SHORT_LENGHT, MAX_SHORT_LENGHT), Optional()),
     )
     submit = SubmitField("Создать")
