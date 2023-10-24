@@ -1,6 +1,8 @@
 from http import HTTPStatus
+from typing import NoReturn, Union
 
 from flask import abort, flash, redirect, render_template, url_for
+from werkzeug import Response
 
 from yacut import app, db
 from yacut.constants import EMPTY_INPUT, HTTPMethod, MessageInfo
@@ -11,7 +13,7 @@ from yacut.validators import custom_id_validator
 
 
 @app.route("/", methods=(HTTPMethod.GET, HTTPMethod.POST))
-def index_view():
+def index_view() -> str:
     """Главная страница приложения."""
     form = URLMapForm()
     if not form.validate_on_submit():
@@ -34,15 +36,15 @@ def index_view():
     if short in EMPTY_INPUT:
         short = get_unique_short_id()
     url = URLMap(original=form.original_link.data, short=short)
-    db.session.add(url)
-    db.session.commit()
+    db.session.add(url)  # type: ignore
+    db.session.commit()  # type: ignore
     new_link = url_for("redirect_view", short=short, _external=True)
     flash(f'{MessageInfo.SHORT_DONE}\n<a href="{new_link}">{new_link}</a>')
     return render_template("index.html", form=form)
 
 
 @app.route("/<short>")
-def redirect_view(short):
+def redirect_view(short: str) -> Union[Response, NoReturn]:
     """Перенаправление по ссылке."""
     url = URLMap.query.filter_by(short=short).first()
     return redirect(url.original) if url else abort(HTTPStatus.NOT_FOUND)

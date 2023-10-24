@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import jsonify, request
+from werkzeug import Response
 
 from yacut import app, db
 from yacut.constants import EMPTY_INPUT, HTTPMethod, MessageInfo
@@ -11,7 +12,7 @@ from yacut.validators import custom_id_validator
 
 
 @app.route("/api/id/<short_id>/", methods=(HTTPMethod.GET,))
-def get_original_url(short_id):
+def get_original_url(short_id: str) -> tuple[Response, HTTPStatus]:
     """Получение оригинальной ссылки по короткому идентификатору."""
     url = URLMap().query.filter_by(short=short_id).first()
     if url is None:
@@ -22,7 +23,7 @@ def get_original_url(short_id):
 
 
 @app.route("/api/id/", methods=(HTTPMethod.POST,))
-def create_short_link():
+def create_short_link() -> tuple[Response, HTTPStatus]:
     """Создание короткой ссылки."""
     data = request.get_json()
     if data is None:
@@ -44,6 +45,6 @@ def create_short_link():
     }
     url = URLMap()
     url.from_dict(data=new_data)
-    db.session.add(url)
-    db.session.commit()
+    db.session.add(url)  # type: ignore
+    db.session.commit()  # type: ignore
     return jsonify(url.to_dict()), HTTPStatus.CREATED
